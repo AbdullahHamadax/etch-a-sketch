@@ -7,8 +7,16 @@ const rainbowModeBtn = document.querySelector(".rainbow");
 let isRainbowModeOn = false;
 let toolUsed;
 
-penBtn.addEventListener("click", () => (toolUsed = "pen"));
-eraserBtn.addEventListener("click", () => (toolUsed = "eraser"));
+penBtn.addEventListener("click", () => {
+  toolUsed = "pen";
+  penBtn.classList.add("active");
+  eraserBtn.classList.remove("active");
+});
+eraserBtn.addEventListener("click", () => {
+  toolUsed = "eraser";
+  eraserBtn.classList.add("active");
+  penBtn.classList.remove("active");
+});
 
 rainbowModeBtn.addEventListener("click", () => {
   isRainbowModeOn = !isRainbowModeOn;
@@ -41,8 +49,8 @@ function createGrid(gridSize) {
     for (let j = 0; j < gridSize; j++) {
       const square = document.createElement("div");
       square.className = "square";
-      square.style.width = `calc(100%/${gridSize}`;
-      square.style.height = `calc(100%/${gridSize}`;
+      square.style.width = `calc(100%/${gridSize})`;
+      square.style.height = `calc(100%/${gridSize})`;
       drawingCanvas.append(square);
 
       square.addEventListener("mouseenter", () => {
@@ -60,6 +68,8 @@ function createGrid(gridSize) {
       clearBtn.addEventListener("click", () => {
         square.style.backgroundColor = "white";
         toolUsed = "nothing";
+        penBtn.classList.remove("active");
+        eraserBtn.classList.remove("active");
       });
     }
   }
