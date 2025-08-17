@@ -68,8 +68,8 @@ button:hover {
 }
 
 .active {
-  background-color: #ffcc00; /* or any highlight color */
-  color: black; /* so text stays readable */
+  background-color: #ffcc00;
+  color: black;
   border: 2px solid #333;
 }
 
