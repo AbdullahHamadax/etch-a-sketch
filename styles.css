@@ -62,10 +62,15 @@ button:hover {
 
 .square {
   border: 1px solid black;
-  width: calc(100% / 32);
-  height: calc(100% / 32);
+  width: calc(100% / 16);
+  height: calc(100% / 16);
   box-sizing: border-box;
-  cursor: pointer;
+}
+
+.active {
+  background-color: #ffcc00; /* or any highlight color */
+  color: black; /* so text stays readable */
+  border: 2px solid #333;
 }
 
 .circles-container {
