@@ -8,14 +8,25 @@ let isRainbowModeOn = false;
 let toolUsed;
 
 penBtn.addEventListener("click", () => {
-  toolUsed = "pen";
-  penBtn.classList.add("active");
-  eraserBtn.classList.remove("active");
+  if (toolUsed === "pen") {
+    toolUsed = null;
+    penBtn.classList.remove("active");
+  } else {
+    toolUsed = "pen";
+    penBtn.classList.add("active");
+    eraserBtn.classList.remove("active");
+  }
 });
+
 eraserBtn.addEventListener("click", () => {
-  toolUsed = "eraser";
-  eraserBtn.classList.add("active");
-  penBtn.classList.remove("active");
+  if (toolUsed === "eraser") {
+    toolUsed = null;
+    eraserBtn.classList.remove("active");
+  } else {
+    toolUsed = "eraser";
+    eraserBtn.classList.add("active");
+    penBtn.classList.remove("active");
+  }
 });
 
 rainbowModeBtn.addEventListener("click", () => {
@@ -36,15 +47,16 @@ changeGridSizeBtn.addEventListener("click", () => {
 });
 
 function getRandomColor() {
-  var letters = "0123456789ABCDEF";
-  var color = "#";
-  for (var i = 0; i < 6; i++) {
+  const letters = "0123456789ABCDEF";
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
   return color;
 }
 
 function createGrid(gridSize) {
+  drawingCanvas.innerHTML = "";
   for (let i = 0; i < gridSize; i++) {
     for (let j = 0; j < gridSize; j++) {
       const square = document.createElement("div");
@@ -52,27 +64,30 @@ function createGrid(gridSize) {
       square.style.width = `calc(100%/${gridSize})`;
       square.style.height = `calc(100%/${gridSize})`;
       drawingCanvas.append(square);
-
-      square.addEventListener("mouseenter", () => {
-        if (toolUsed === "pen") {
-          square.style.backgroundColor = isRainbowModeOn
-            ? getRandomColor()
-            : "black";
-
-          square.style.cursor = "pointer";
-        } else if (toolUsed === "eraser") {
-          square.style.backgroundColor = "white";
-        }
-      });
-
-      clearBtn.addEventListener("click", () => {
-        square.style.backgroundColor = "white";
-        toolUsed = "nothing";
-        penBtn.classList.remove("active");
-        eraserBtn.classList.remove("active");
-      });
     }
   }
 }
+
+// Some event delegations
+
+clearBtn.addEventListener("click", () => {
+  const squares = document.querySelectorAll(".square");
+  squares.forEach((sq) => (sq.style.backgroundColor = "white"));
+  toolUsed = "nothing";
+  penBtn.classList.remove("active");
+  eraserBtn.classList.remove("active");
+});
+
+drawingCanvas.addEventListener("mouseover", (e) => {
+  if (e.buttons === 1 && e.target.classList.contains("square")) {
+    if (toolUsed === "pen") {
+      e.target.style.backgroundColor = isRainbowModeOn
+        ? getRandomColor()
+        : "black";
+    } else if (toolUsed === "eraser") {
+      e.target.style.backgroundColor = "white";
+    }
+  }
+});
 
 createGrid(16);
